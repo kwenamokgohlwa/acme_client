@@ -9,6 +9,10 @@ import {
   CardImg,
   Container,
   CardFooter,
+  InputGroup,
+  Input,
+  InputGroupAddon,
+  InputGroupText,
 } from "reactstrap";
 
 interface Account {
@@ -95,7 +99,14 @@ function App() {
             className="Logo"
           />
           <Card>
-            <CardHeader>Account Dashboard</CardHeader>
+            <CardHeader>
+              <InputGroup>
+                <Input placeholder="amount" />
+                <InputGroupAddon addonType="append">
+                  <InputGroupText>Amount</InputGroupText>
+                </InputGroupAddon>
+              </InputGroup>
+            </CardHeader>
 
             <CardBody>
               <AcmeAccounts accounts={accounts} />
