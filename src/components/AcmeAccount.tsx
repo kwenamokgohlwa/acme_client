@@ -21,9 +21,9 @@ const AcmeAccount: React.FC<Account> = ({
       <td>{Type}</td>
       <td>
         {Balance && Balance >= 0 ? (
-          <span style={{ color: "green" }}>{Balance}</span>
+          <span style={{ color: "green" }}>{Balance.toFixed(2)}</span>
         ) : (
-          <span style={{ color: "red" }}>{Balance}</span>
+          <span style={{ color: "red" }}>{Balance.toFixed(2)}</span>
         )}
       </td>
       <td>
