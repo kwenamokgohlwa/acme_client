@@ -32,51 +32,45 @@ function App() {
       Balance: -20.0,
       Withdraw: false,
     },
-
-    {
-      Number: "6331103626640816",
-      Type: "cheque",
-      Balance: 296.65,
-      Withdraw: true,
-    },
-    {
-      Number: "5248117462997084",
-      Type: "savings",
-      Balance: -2,
-      Withdraw: false,
-    },
-    {
-      Number: "6331103626640816",
-      Type: "cheque",
-      Balance: 96.65,
-      Withdraw: true,
-    },
   ]);
 
-  let [balance, setBalance] = React.useState<number>(0);
-
-  const isWithdraw = (selectedAccount: Account) => {
-    let withdraw: boolean = false;
-
-    if (selectedAccount.Type && selectedAccount.Type === "savings") {
-      if (selectedAccount.Balance >= 0) {
-        withdraw = true;
-      }
-    } else if (selectedAccount.Type && selectedAccount.Type === "cheque") {
-      if (selectedAccount.Balance >= -500) {
-        withdraw = true;
-      }
-    }
-
-    return withdraw;
-  };
+  let [total, setTotal] = React.useState<number>(0);
 
   React.useEffect(() => {
     axios
-      .get("")
+      .get("http://localhost:8080/api/accounts")
       .then((res) => {
-        console.log(res);
-        // setAccounts([]);
+        let accountsData: Account[] = res.data.map(
+          (accountIn: {
+            account_number: string;
+            account_type: string;
+            balance: string;
+          }) => {
+            let withdraw: boolean = false;
+
+            if (accountIn.account_type === "savings") {
+              if (+accountIn.balance >= 0) {
+                withdraw = true;
+              }
+            } else if (accountIn.account_type === "cheque") {
+              if (+accountIn.balance >= -500) {
+                withdraw = true;
+              }
+            }
+
+            return {
+              Number: accountIn.account_number,
+              Type: accountIn.account_type,
+              Balance: +accountIn.balance,
+              Withdraw: withdraw || false,
+            };
+          }
+        );
+
+        return accountsData;
+      })
+      .then((accountArray) => {
+        setAccounts(accountArray);
       })
       .catch((err) => {
         console.error(err);
@@ -84,19 +78,18 @@ function App() {
   }, []);
 
   React.useEffect(() => {
-    let total: number = accounts.reduce((a: number, b: Account) => {
+    let sum: number = accounts.reduce((a: number, b: Account) => {
       return a + b.Balance;
     }, 0);
 
-    setBalance(total);
+    setTotal(sum);
   }, [accounts]);
 
   return (
     <div className="App">
       <div className="Acme-Card">
-        <Container>
+        <Container className="Acme-Dashboard">
           <CardImg
-            top
             src="../assets/acme_logo.svg"
             alt="ACME Bank Logo"
             className="Logo"
@@ -109,10 +102,10 @@ function App() {
             </CardBody>
 
             <CardFooter className="text-muted">
-              {balance && balance >= 0 ? (
-                <span style={{ color: "green" }}>{balance.toFixed(2)}</span>
+              {total && total >= 0 ? (
+                <span style={{ color: "green" }}>{total}</span>
               ) : (
-                <span style={{ color: "red" }}>{balance.toFixed(2)}</span>
+                <span style={{ color: "red" }}>{total}</span>
               )}
             </CardFooter>
           </Card>
