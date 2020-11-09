@@ -32,6 +32,25 @@ function App() {
       Balance: -20.0,
       Withdraw: false,
     },
+
+    {
+      Number: "6331103626640816",
+      Type: "cheque",
+      Balance: 296.65,
+      Withdraw: true,
+    },
+    {
+      Number: "5248117462997084",
+      Type: "savings",
+      Balance: -2,
+      Withdraw: false,
+    },
+    {
+      Number: "6331103626640816",
+      Type: "cheque",
+      Balance: 96.65,
+      Withdraw: true,
+    },
   ]);
 
   let [balance, setBalance] = React.useState<number>(0);
@@ -91,9 +110,9 @@ function App() {
 
             <CardFooter className="text-muted">
               {balance && balance >= 0 ? (
-                <span style={{ color: "green" }}>{balance}</span>
+                <span style={{ color: "green" }}>{balance.toFixed(2)}</span>
               ) : (
-                <span style={{ color: "red" }}>{balance}</span>
+                <span style={{ color: "red" }}>{balance.toFixed(2)}</span>
               )}
             </CardFooter>
           </Card>
