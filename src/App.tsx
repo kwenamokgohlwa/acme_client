@@ -1,24 +1,104 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
+import AcmeAccounts from "./components/AcmeAccounts";
+import axios from "axios";
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  CardImg,
+  Container,
+  CardFooter,
+} from "reactstrap";
+
+interface Account {
+  Number: string;
+  Type: string;
+  Balance: number;
+  Withdraw?: boolean;
+}
 
 function App() {
+  let [accounts, setAccounts] = React.useState<Account[]>([
+    {
+      Number: "6331103626640816",
+      Type: "cheque",
+      Balance: -296.65,
+      Withdraw: true,
+    },
+    {
+      Number: "5248117462997084",
+      Type: "savings",
+      Balance: -20.0,
+      Withdraw: false,
+    },
+  ]);
+
+  let [balance, setBalance] = React.useState<number>(0);
+
+  const isWithdraw = (selectedAccount: Account) => {
+    let withdraw: boolean = false;
+
+    if (selectedAccount.Type && selectedAccount.Type === "savings") {
+      if (selectedAccount.Balance >= 0) {
+        withdraw = true;
+      }
+    } else if (selectedAccount.Type && selectedAccount.Type === "cheque") {
+      if (selectedAccount.Balance >= -500) {
+        withdraw = true;
+      }
+    }
+
+    return withdraw;
+  };
+
+  React.useEffect(() => {
+    axios
+      .get("")
+      .then((res) => {
+        console.log(res);
+        // setAccounts([]);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
+
+  React.useEffect(() => {
+    let total: number = accounts.reduce((a: number, b: Account) => {
+      return a + b.Balance;
+    }, 0);
+
+    setBalance(total);
+  }, [accounts]);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="Acme-Card">
+        <Container>
+          <CardImg
+            top
+            src="../assets/acme_logo.svg"
+            alt="ACME Bank Logo"
+            className="Logo"
+          />
+          <Card>
+            <CardHeader>Account Dashboard</CardHeader>
+
+            <CardBody>
+              <AcmeAccounts accounts={accounts} />
+            </CardBody>
+
+            <CardFooter className="text-muted">
+              {balance && balance >= 0 ? (
+                <span style={{ color: "green" }}>{balance}</span>
+              ) : (
+                <span style={{ color: "red" }}>{balance}</span>
+              )}
+            </CardFooter>
+          </Card>
+        </Container>
+      </div>
     </div>
   );
 }
