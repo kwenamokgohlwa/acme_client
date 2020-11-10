@@ -17,6 +17,11 @@
     height:100vh;
 }
 
+.Amount {
+    width: 300px;
+    margin: 0 auto;
+}
+
 .Logo {
     max-height: 175px;
 }

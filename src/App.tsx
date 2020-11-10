@@ -13,6 +13,7 @@ import {
   Input,
   InputGroupAddon,
   InputGroupText,
+  Badge,
 } from "reactstrap";
 
 interface Account {
@@ -23,7 +24,7 @@ interface Account {
 }
 
 function App() {
-  let [accounts, setAccounts] = React.useState<Account[]>([
+  const [accounts, setAccounts] = React.useState<Account[]>([
     {
       Number: "6331103626640816",
       Type: "cheque",
@@ -38,7 +39,9 @@ function App() {
     },
   ]);
 
-  let [total, setTotal] = React.useState<number>(0);
+  const [total, setTotal] = React.useState<number>(0);
+
+  const [amount, setAmount] = React.useState(0);
 
   React.useEffect(() => {
     axios
@@ -53,11 +56,14 @@ function App() {
             let withdraw: boolean = false;
 
             if (accountIn.account_type === "savings") {
-              if (+accountIn.balance >= 0) {
+              if (+accountIn.balance >= 0 && amount <= +accountIn.balance) {
                 withdraw = true;
               }
             } else if (accountIn.account_type === "cheque") {
-              if (+accountIn.balance >= -500) {
+              if (
+                +accountIn.balance >= -500 &&
+                amount <= +accountIn.balance + 500
+              ) {
                 withdraw = true;
               }
             }
@@ -79,7 +85,7 @@ function App() {
       .catch((err) => {
         console.error(err);
       });
-  }, []);
+  }, [amount]);
 
   React.useEffect(() => {
     let sum: number = accounts.reduce((a: number, b: Account) => {
@@ -100,12 +106,20 @@ function App() {
           />
           <Card>
             <CardHeader>
-              <InputGroup>
-                <Input placeholder="amount" />
-                <InputGroupAddon addonType="append">
-                  <InputGroupText>Amount</InputGroupText>
-                </InputGroupAddon>
-              </InputGroup>
+              <div className="Amount">
+                <InputGroup>
+                  <Input
+                    placeholder="amount"
+                    name="amount"
+                    onChange={(event) => {
+                      setAmount(+event.target.value || 0);
+                    }}
+                  />
+                  <InputGroupAddon addonType="append">
+                    <InputGroupText>Amount</InputGroupText>
+                  </InputGroupAddon>
+                </InputGroup>
+              </div>
             </CardHeader>
 
             <CardBody>
@@ -113,11 +127,9 @@ function App() {
             </CardBody>
 
             <CardFooter className="text-muted">
-              {total && total >= 0 ? (
-                <span style={{ color: "green" }}>{total}</span>
-              ) : (
-                <span style={{ color: "red" }}>{total}</span>
-              )}
+              <h4>
+                <Badge color="secondary">{total}</Badge>
+              </h4>
             </CardFooter>
           </Card>
         </Container>

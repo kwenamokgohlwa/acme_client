@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, CardFooter } from "reactstrap";
+import { Button } from "reactstrap";
 import alert from "sweetalert";
 
 interface Account {
