@@ -1,6 +1,41 @@
-# Getting Started with Create React App
+# ACME Bank Dashboard
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+ACME Bank Dashboard is a fully functional React UI that is built with React, TypeScript, ReactStrap (Bootstrap) including other related packages. 
+
+It is a small banking dashboard which displays balances, calculates the total and where accounts with enough funds are dynamically given the functionality to withdraw. 
+
+## Installation
+
+Use git to clone
+
+```bash
+git clone https://github.com/kwenamokgohlwa/acme_client.git
+cd acme_client
+```
+
+Use yarn to install
+
+```bash
+yarn install
+```
+
+Mock API (https://github.com/cibfrontend/mock-api-server) - Yarn
+
+```bash
+git clone https://github.com/cibfrontend/mock-api-server.git
+cd mock-api-server
+yarn install
+yarn run dev
+```
+
+Mock API (https://github.com/cibfrontend/mock-api-server) - NPM
+
+```bash
+git clone https://github.com/cibfrontend/mock-api-server.git
+cd mock-api-server
+npm install
+npm run dev
+```
 
 ## Available Scripts
 
@@ -39,8 +74,7 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
+## License
+[MIT](https://choosealicense.com/licenses/mit/)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
